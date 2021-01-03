@@ -1,12 +1,12 @@
 // Setup firebase app
-  let app = firebase.app();
-  firebase.auth().signInAnonymously().catch(function(error) { console.log(error); });
-  firebase.auth().onAuthStateChanged(function(user) { });
-  db = firebase.firestore(app);
+let app = firebase.app();
+firebase.auth().signInAnonymously().catch(function(error) { console.log(error); });
+firebase.auth().onAuthStateChanged(function(user) { });
+db = firebase.firestore(app);
 
 
 let rooms = {
-  ts: firebase.getTimestamp()
+  ts: new Date().getTime()
 };
 
 $('#submit').on('click', submit);
@@ -21,7 +21,7 @@ function submit(e) {
       let data = e.target.result; 
       let result = parseCSV(data);
       let final = pairRooms(result);
-      db.collection('rooms').add(final);
+      db.collection('rooms').doc(new Date().toTimeString()).set(final);
     });
     reader.readAsBinaryString(files[0]);
   }
@@ -39,13 +39,15 @@ function parseCSV(data) {
       if (!rooms.hasOwnProperty(roomname)) {
         rooms[roomname] = {
           host: "",
-          participants: [],
-          room: true
+          participants: []
         };
       }
       if (participant.includes('Facilitator')) {
+        participant = participant.replace('(Facilitator)', '');
+        participant = participant.replace('Facilitator', '');
         rooms[roomname].host = participant;
       } else {
+        participant = participant.replace('(Guest)', '');
         rooms[roomname].participants.push(participant);
       }
     }
@@ -56,12 +58,12 @@ function parseCSV(data) {
 
 function pairRooms(data) {
   for (let key in data) {
-    if (data.hasOwnProperty(key)) {
+    if (data.hasOwnProperty(key) && data[key].participants) {
       let participants = data[key].participants;
       if (participants.length % 2 !== 0) {
         participants.push(data[key].host);
       }
-      let result = zip(splitAt(participants.length/2, shuffle(participants)));
+      let result = shuffle(participants);
       data[key].paired = result;
     }
   }
@@ -69,22 +71,9 @@ function pairRooms(data) {
   return data;
 }
 
-function splitAt(i, xs) {
-  var a = xs.slice(0, i);
-  var b = xs.slice(i, xs.length);
-  return [a, b];
-};
 
 function shuffle(xs) {
   return xs.slice(0).sort(function() {
     return .5 - Math.random();
   });
 };
-
-function zip(xs) {
-  return xs[0].map(function(_,i) {
-    return xs.map(function(x) {
-      return x[i];
-    });
-  });
-}
