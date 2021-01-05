@@ -10,31 +10,50 @@
     
     <script src='https://code.jquery.com/jquery-3.5.1.min.js' integrity='sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=' crossorigin='anonymous'></script>
     <style>
+      body {
+        font-family:Arial, Helvetica, sans-serif;
+        margin: 2em;
+      }
+      h1 {
+        font-size: 1.0em;
+        margin-top: 2em;
+      }
+      .room {
+        max-width: 60em;
+      }
       img {
-        width: 1vw;
+        width: 1.2em;
         float: right;
-        padding: 0.2vw;
+        padding-right: 0.25vw;
       }
-      tbody {
-        border: 1px solid black;
-      }
-      td {
-        border: 1px solid black;
-        width: 20vw;
+      span {
+        display: inline-block;
+        margin-bottom: 0.5em;
+        padding: 0.5em;
         cursor: pointer;
       }
-      
-      td:hover {
-        background: #eaeaea;
+      span:hover {
+        background: #a4cbff;
       }
-      td:active {
-        background: yellow;
+      span:active {
+        background: #90c0ff;
       }    
+      .instruct {
+        background: #d7e8ff;
+        width: calc(100% - 6em);
+      }
+      .copied {
+        display: none;
+        margin: 0;
+      }
     </style>
   </head>
   <body>
 
-    
+    <p>Wait for the cue from Lauren.<br>
+      Click each name to copy to clipboard the message for that person.<br>
+      Locate that person in the zoom chat.<br>
+      Paste the clipboard message into a private message to them.</p>    
     <script src='index.js?v=0.1'></script>
     
   </body>

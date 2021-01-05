@@ -14,30 +14,37 @@ db.collection('rooms').orderBy("ts", "desc").limit(1)
 
 
 function displayRooms(data) {
-  let i = 0;
-  for (let key in data) {
-    if (data[key].paired) {
-      console.log(data[key])
-      $('body').append('<h1>'+key+'</h1>');
-      $('body').append('<table id="room'+i+'"><tbody></tbody></table>');
+  Object.keys(data)
+  .sort()
+  .forEach(function(key, i) {
+    displayRoom(data[key], key, i);
+   });
+}
 
-      for (let p=0; p <data[key].paired.length; p+=2) {
-        let a = data[key].paired[p];
-        let b = data[key].paired[p+1];
-        $('#room'+i+' tbody').append('<tr><td id="clip'+p+'">'+a+'<img src="clip.png"></td><td id="clip'+(p+1)+'">'+b+'<img src="clip.png"></td></tr>');
-        $('#room'+i+' #clip'+p).click(function() { copyToClipboard(a); });
-        $('#room'+i+' #clip'+(p+1)).click(function() { copyToClipboard(b); });
-      }
-      i++;
+function displayRoom(data, key, i) {
+  if (data.paired) {
+    console.log(data)
+    $('body').append('<h1>'+key+'</h1>');
+    $('body').append('<div id="room'+i+'" class="room"></div>');
+    for (let p=0; p <data.paired.length; p+=2) {
+      let a = data.paired[p];
+      let texta = 'Please hold the following name in your mind. You will be instructed what to do with it shortly: ' + a;
+      let b = data.paired[p+1];
+      let textb = 'Please hold the following name in your mind. You will be instructed what to do with it shortly: ' + b;
+      $('#room'+i).append('<div id="clip'+p+'" class="person"><span class="instruct"><b>'+a+'</b><br>'+textb+'<img src="clip.png"></span> <span class="copied">copied!</span></div>');
+      $('#room'+i).append('<div id="clip'+(p+1)+'" class="person"><span class="instruct"><b>'+b+'</b><br>'+texta+'<img src="clip.png"></span> <span class="copied">copied!</span></div>');
+      $('#room'+i+' #clip'+p).click(function() { copyToClipboard($(this), textb); });
+      $('#room'+i+' #clip'+(p+1)).click(function() { copyToClipboard($(this), texta); });
     }
   }
 }
 
-function copyToClipboard(text) {
-  console.log(text)
-  let $temp = $("<input>");
+function copyToClipboard(elem, text) {
+  $(elem).find('.copied').fadeIn(0).delay(1000).fadeOut(0);
+
+  let $temp = $('<input>');
   $("body").append($temp);
   $temp.val(text).select();
-  document.execCommand("copy");
+  document.execCommand('copy');
   $temp.remove();
 }

@@ -13,6 +13,8 @@ $('#submit').on('click', submit);
 
 function submit(e) {
   e.preventDefault();
+  $('#breakoutsForm').hide();
+  $('#analyzing').show();
   let input = document.getElementById('breakouts');
   let files = $('#breakouts').prop('files');
   if (files && files[0]) {
@@ -22,6 +24,9 @@ function submit(e) {
       let result = parseCSV(data);
       let final = pairRooms(result);
       db.collection('rooms').doc(new Date().toTimeString()).set(final);
+      $('#analyzing').hide();
+      $('#thankyou').show();
+      setTimeout(function(){ window.location = '/'; }, 3000);
     });
     reader.readAsBinaryString(files[0]);
   }
