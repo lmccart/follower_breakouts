@@ -1,15 +1,14 @@
-// Setup firebase app
 let app = firebase.app();
 firebase.auth().signInAnonymously().catch(function(error) { console.log(error); });
 firebase.auth().onAuthStateChanged(function(user) { });
 db = firebase.firestore(app);
-
 
 let rooms = {
   ts: new Date().getTime()
 };
 
 $('#submit').on('click', submit);
+$('#clear_db').on('click', clearPeople);
 
 function submit(e) {
   e.preventDefault();
@@ -21,64 +20,54 @@ function submit(e) {
     let reader = new FileReader();
     reader.addEventListener('load', function (e) {
       let data = e.target.result; 
-      let result = parseCSV(data);
+      let result = parseWriteCSV(data);
       let final = pairRooms(result);
-      db.collection('rooms').doc(new Date().toTimeString()).set(final);
+      // db.collection('rooms').doc(new Date().toTimeString()).set(final);
       $('#analyzing').hide();
       $('#thankyou').show();
-      setTimeout(function(){ window.location = '/'; }, 3000);
+      // setTimeout(function(){ window.location = '/'; }, 3000);
     });
     reader.readAsBinaryString(files[0]);
   }
 };
 
-function parseCSV(data) {
+function parseWriteCSV(data) {
+  let batch = db.batch();
+
   let parsedata = [];
   let newline = data.split("\n");
   for(let i = 0; i < newline.length; i++) {
-    if (i > 3 && newline[i].length > 1) {
+    if (i > 0 && newline[i].length > 1) {
+      console.log(newline[i])
       let line = newline[i].split(",");
-      parsedata.push(line)
-      let roomname = line[0];
-      let participant = line[1];
-      if (!rooms.hasOwnProperty(roomname)) {
-        rooms[roomname] = {
-          host: "",
-          participants: []
-        };
+      parsedata.push(line);
+      let name = line[2];
+
+      let person = {
+        room: line[0],
+        participant: name.replace('(Facilitator)', ''),
+        email: line[1],
+        host: name.includes('Facilitator'),
+        id: makeid()
       }
-      if (participant.includes('Facilitator')) {
-        participant = participant.replace('(Facilitator)', '');
-        participant = participant.replace('Facilitator', '');
-        rooms[roomname].host = participant;
-      } else {
-        participant = participant.replace('(Guest)', '');
-        rooms[roomname].participants.push(participant);
-      }
+      
+      let ref = db.collection('people').doc(person.id);
+      batch.set(ref, person);
     }
   }
-  console.log(parsedata);
-  return rooms;
-}
-
-function pairRooms(data) {
-  for (let key in data) {
-    if (data.hasOwnProperty(key) && data[key].participants) {
-      let participants = data[key].participants;
-      if (participants.length % 2 !== 0) {
-        participants.push(data[key].host);
-      }
-      let result = shuffle(participants);
-      data[key].paired = result;
-    }
-  }
-  console.log(data);
-  return data;
-}
-
-
-function shuffle(xs) {
-  return xs.slice(0).sort(function() {
-    return .5 - Math.random();
+  batch.commit().then(function () {
+    console.log(parsedata);
+    return rooms;
   });
-};
+}
+
+function makeid() {
+  let result           = '';
+  let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let charactersLength = characters.length;
+  for ( let i = 0; i < 6; i++ ) {
+     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  result += Date.now();
+  return result;
+}

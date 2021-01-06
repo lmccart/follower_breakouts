@@ -50,11 +50,37 @@
   </head>
   <body>
 
+    <div id='rooms'>
+      <p>Click on your breakout room</p>
+    </div>
+
+
     <p>Wait for the cue from Lauren.<br>
       Click each name to copy to clipboard the message for that person.<br>
       Locate that person in the zoom chat.<br>
       Paste the clipboard message into a private message to them.</p>    
-    <script src='index.js?v=0.1'></script>
+
+<script>
+let app = firebase.app();
+firebase.auth().signInAnonymously().catch(function(error) { console.log(error); });
+firebase.auth().onAuthStateChanged(function(user) { });
+db = firebase.firestore(app);
+
+let rooms = [];
+
+db.collection('people')
+  .get()
+  .then(function(snapshot) {
+    snapshot.forEach(function(doc) {
+      console.log(doc.id, " => ", doc.data());
+      let name = doc.data().room;
+      if (!rooms.includes(name)) {
+        $('#rooms').append('<a href="room.html?id='+name+'">'+name+'</a><br>');
+        rooms.push(name);
+      }
+    });
+  });
+</script>
     
   </body>
 </html>

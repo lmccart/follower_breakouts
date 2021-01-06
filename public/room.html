@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-
     <!-- update the version number as needed -->
     <script src="/__/firebase/8.2.1/firebase-app.js"></script>
     <script src="/__/firebase/8.2.1/firebase-analytics.js"></script>
@@ -15,38 +14,39 @@
         font-family:Arial, Helvetica, sans-serif;
         margin: 2em;
       }
-      h1 {
-        font-size: 1.0em;
-        margin-top: 2em;
+      .host {
+        font-weight: bold;
       }
-      div {
-        margin-top: 2em;
+      button {
+        margin-top: 1em;
+      }
+      #messages {
         display: none;
       }
-
-      label, input {
-        margin-top: 1em;
-        display: block;
-      }
-
     </style>
   </head>
   <body>
-    <form id='breakoutsForm'>
-      <label for='breakouts'>Upload breakouts data:</label>
-      <input type='file' id='breakouts' name='breakouts'>
-      <input type='submit' id='submit'>
-    </form>
 
-    <div id='analyzing'>
-      Analyzing data. If this page doesn't update within a minute, please try refreshing and submitting the csv file again.
-    </div>
+    <h1></h1>
 
-    <div id='thankyou'>
-      Success! Redirecting you to the participant assignments page shortly. <a href="/">Or you can click here.</a>
-    </div>
-    
-    <script src='upload.js?v=0.1'></script>
+    <p>Wait for the cue from Lauren.<br>
+      Click each name to copy to clipboard the message for that person.<br>
+      Locate that person in the zoom chat.<br>
+      Paste the clipboard message into a private message to them.</p>    
+
+    <section id='attendance'>
+      <h2>Attendance</h2>
+      <div id='people'></div>
+      <button id='generate'>Generate Messages</button>
+    </section>
+
+    <section id='messages'>
+      <h2>Messages</h2>
+      <div id='assignments'></div>
+
+    </section>
+
+    <script src='room.js?v=0.1'></script>
     
   </body>
 </html>
