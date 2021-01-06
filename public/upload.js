@@ -8,7 +8,6 @@ let rooms = {
 };
 
 $('#submit').on('click', submit);
-$('#clear_db').on('click', clearPeople);
 
 function submit(e) {
   e.preventDefault();
@@ -21,9 +20,6 @@ function submit(e) {
     reader.addEventListener('load', function (e) {
       let data = e.target.result; 
       let result = parseWriteCSV(data);
-      let final = pairRooms(result);
-      // db.collection('rooms').doc(new Date().toTimeString()).set(final);
-      $('#analyzing').hide();
       $('#thankyou').show();
       // setTimeout(function(){ window.location = '/'; }, 3000);
     });
@@ -45,7 +41,7 @@ function parseWriteCSV(data) {
 
       let person = {
         room: line[0],
-        participant: name.replace('(Facilitator)', ''),
+        name: name.replace('(Facilitator)', ''),
         email: line[1],
         host: name.includes('Facilitator'),
         id: makeid()

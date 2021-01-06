@@ -12,53 +12,27 @@
     <style>
       body {
         font-family:Arial, Helvetica, sans-serif;
-        margin: 2em;
+        margin: 3em;
+        line-height: 1.5em;
       }
-      h1 {
-        font-size: 1.0em;
-        margin-top: 2em;
-      }
-      .room {
-        max-width: 60em;
-      }
-      img {
-        width: 1.2em;
-        float: right;
-        padding-right: 0.25vw;
-      }
-      span {
-        display: inline-block;
-        margin-bottom: 0.5em;
-        padding: 0.5em;
-        cursor: pointer;
-      }
-      span:hover {
-        background: #a4cbff;
-      }
-      span:active {
-        background: #90c0ff;
-      }    
-      .instruct {
-        background: #d7e8ff;
-        width: calc(100% - 6em);
-      }
-      .copied {
-        display: none;
-        margin: 0;
+      ol {
+        margin: 2em 0;
+        padding: 1em;
       }
     </style>
   </head>
   <body>
 
+    <h1>Feeling Seen, Being Watched</h1>
+    <ol>
+      <li>Lauren: <i>Welcome. I am happy to have this time with you...</i></li>
+      <li>Lauren: <i>We will start by moving into breakout rooms. Once you are there, a facilitator will guide you in sharing your names and locations to get acquainted.</i></li>
+      <li>Lauren: <i>Then I will rejoin you to guide you through this activity together.</i></li>
+      <li><b>Facilitators: Click on breakout room link below.</b></li>
+    </ol> 
+
     <div id='rooms'>
-      <p>Click on your breakout room</p>
     </div>
-
-
-    <p>Wait for the cue from Lauren.<br>
-      Click each name to copy to clipboard the message for that person.<br>
-      Locate that person in the zoom chat.<br>
-      Paste the clipboard message into a private message to them.</p>    
 
 <script>
 let app = firebase.app();
