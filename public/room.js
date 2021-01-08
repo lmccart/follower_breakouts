@@ -103,15 +103,36 @@ function displayAssignments(people) {
     return;
   }
 
+  let elms = [];
+
   for (let p=0; p <people.length; p+=2) {
     let a = people[p];
     let texta = 'Please hold the following name in your mind. You will be instructed what to do with it shortly: ' + a;
     let b = people[p+1];
     let textb = 'Please hold the following name in your mind. You will be instructed what to do with it shortly: ' + b;
-    $('#messages').append('<div id="clip'+p+'" class="message"><span class="instruct"><b>Send to '+a+':</b><br>'+textb+'<img src="clip.png" class="clipicon"></span> <span class="copied">copied!</span></div>');
-    $('#messages').append('<div id="clip'+(p+1)+'" class="message"><span class="instruct"><b>Send to '+b+':</b><br>'+texta+'<img src="clip.png" class="clipicon"></span> <span class="copied">copied!</span></div>');
-    $('#clip'+p).click(function() { copyToClipboard($(this), textb); });
-    $('#clip'+(p+1)).click(function() { copyToClipboard($(this), texta); });
+    
+    let elm1 = $('<div class="message" data-name="'+a+'"><span class="instruct"><b>Send to '+a+':</b><br>'+textb+'<img src="clip.png" class="clipicon"></span> <span class="copied">copied!</span></div>');
+    let elm2 = $('<div class="message" data-name="'+b+'"><span class="instruct"><b>Send to '+b+':</b><br>'+texta+'<img src="clip.png" class="clipicon"></span> <span class="copied">copied!</span></div>');
+    
+    elm1.click(function() { copyToClipboard($(this), textb); });
+    elm2.click(function() { copyToClipboard($(this), texta); });
+    
+    elms.push(elm1);
+    elms.push(elm2);
+
+    // $('#messages').append('<div id="clip'+p+'" class="message"><span class="instruct"><b>Send to '+a+':</b><br>'+textb+'<img src="clip.png" class="clipicon"></span> <span class="copied">copied!</span></div>');
+    // $('#messages').append('<div id="clip'+(p+1)+'" class="message"><span class="instruct"><b>Send to '+b+':</b><br>'+texta+'<img src="clip.png" class="clipicon"></span> <span class="copied">copied!</span></div>');
+    // $('#clip'+p).click(function() { copyToClipboard($(this), textb); });
+    // $('#clip'+(p+1)).click(function() { copyToClipboard($(this), texta); });
+  }
+
+  elms = elms.sort(function(a, b) {
+    console.log($(a).data('name'), $(b).data('name'), $(a).data('name') < $(b).data('name'));
+    return $(a).data('name') < $(b).data('name') ? -1 : 1;
+  })
+  console.log(elms)
+  for (let e of elms) {
+    $('#messages').append(e);
   }
 }
 
