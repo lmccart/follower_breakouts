@@ -7,111 +7,29 @@
     <script src="/__/firebase/8.2.1/firebase-auth.js"></script>
     <script src="/__/firebase/8.2.1/firebase-firestore.js"></script>
     <script src='/__/firebase/init.js'></script>
-    
     <script src='https://code.jquery.com/jquery-3.5.1.min.js' integrity='sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=' crossorigin='anonymous'></script>
-    <style>
-      body {
-        font-family:Arial, Helvetica, sans-serif;
-        margin: 3em;
-        line-height: 1.25em;
-      }
-      ol {
-        margin: 2em 0;
-        padding: 1em;
-        max-width: 60em;
-      }
-      li {
-        margin-bottom: 1em;
-      }
-      section {
-        margin-top: 2em;
-      }
-      .person {
-        margin-bottom: 0.5em;
-      }
-      .name {
-        background: #f1f1f1;
-        border: 1px solid gray;
-        font-size: 1em;
-      }
-      .name:focus {
-        background: none;
-      }
-      input[type=checkbox]{
-        -ms-transform: scale(1.25); /* IE */
-        -moz-transform: scale(1.25); /* FF */
-        -webkit-transform: scale(1.25); /* Safari and Chrome */
-        -o-transform: scale(1.25); /* Opera */
-        transform: scale(1.25);
-        padding: 12px;
-      }
-      button {
-        margin-top: 1em;
-        font-size: 1em;
-        background: #d7e8ff;
-        border: 1px solid black;
-        padding: 0.5em;
-        cursor: pointer;
-        outline: none;
-      }
-      #assignments {
-        max-width: 60em;
-        display: none;
-      }
-      img {
-        width: 1.2em;
-        float: right;
-        padding-right: 0.25vw;
-      }
-      .message {
-        display: block;
-        margin-bottom: 0.5em;
-        cursor: pointer;
-      }
-      .instruct:hover, button:hover {
-        background: #a4cbff;
-      }
-      .instruct:active, button:active {
-        background: #90c0ff;
-      }    
-      .instruct {
-        display: inline-block;
-        background: #d7e8ff;
-        width: calc(100% - 6em);
-        padding: 0.5em;
-      }
-      .copied {
-        display: none;
-        margin: 0;
-        margin-left: 0.5em;
-      }
-      #sorry {
-        display: none;
-      }
-    </style>
+    <link href='style.css' rel='stylesheet'>
   </head>
   <body>
 
-    <h1></h1>
+    <h1>Feeling Seen, Being Watched</h1>
 
-    <ol>
-      <li>Go around the room and have each person say their name and location. Call on each person to keep it flowing.</li>
-      <li>As each person says their name, mark them "present" by clicking the checkbox next to their name.</li>
-      <li>Update the name field to match their zoom display name. (Click on name to edit.)</li>
-      <li>Once that's complete, share your audio and play the audio file.</li>
-      <li>As soon as audio starts, click <i>Generate Messages</i>.</li>
-      <li>Click on each message individually. It will copy to clipboard. Locate the person whose name is in bold in your zoom chat to send them a <b>private</b> message. Paste the text into the textbox and send. Repeat for each message. You will have about 5 minutes to complete this. (⌘+v or ctrl+v is the keyboard shortcut for paste!)</li>
-      <li>You're done! If there were an odd number of people in the room, you may be paired with another person for imagining activity. If not, you can just observe.</li>
-    </ol> 
+    <h2></h2>
 
     <section id='attendance'>
-      <h2>Attendance</h2>
+      
+      <label for='facilitator'>Facilitator name:</label>
+      <input type='text' class='name' name='facilitator' id='facilitator' placeholder='Your name here'>
+     
+      <h3>Participants</h3>
+      
       <div id='people'></div>
+
       <button id='generate'>Generate Messages</button>
     </section>
 
     <section id='assignments'>
-      <h2>Messages</h2>
+      <h3>Messages</h3>
       <div id='messages'></div>
       <div id='sorry'>Sorry, something went wrong. Please confirm all info is correct and try again.</div>
 

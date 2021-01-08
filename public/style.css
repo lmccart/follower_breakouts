@@ -1,0 +1,87 @@
+body {
+  font-family:Arial, Helvetica, sans-serif;
+  margin: 3em;
+  line-height: 1.25em;
+}
+h1 {
+  margin-bottom: 1.5em;
+}
+ol {
+  margin: 2em 0;
+  padding: 1em;
+  max-width: 60em;
+}
+li {
+  margin-bottom: 1em;
+}
+div {
+  margin-bottom: 1em;
+}
+
+section {
+  margin-top: 2em;
+}
+#addblank {
+  font-size: 2em;
+  cursor: pointer;
+  color:black;
+}
+#addblank:hover {
+
+  color: #90c0ff;
+}
+
+.person {
+  margin-bottom: 0.5em;
+}
+.name {
+  /* background: #f1f1f1; */
+  border: 1px solid black;
+  font-size: 1em;
+}
+.name:focus {
+  background: none;
+}
+button {
+  margin-top: 1em;
+  font-size: 1em;
+  background: #d7e8ff;
+  border: 1px solid black;
+  padding: 0.5em;
+  cursor: pointer;
+  outline: none;
+}
+#assignments {
+  max-width: 60em;
+  display: none;
+}
+.clipicon {
+  width: 1.2em;
+  float: right;
+  padding-right: 0.25vw;
+}
+.message {
+  display: block;
+  margin-bottom: 0.5em;
+  cursor: pointer;
+}
+.instruct:hover, button:hover {
+  background: #a4cbff;
+}
+.instruct:active, button:active {
+  background: #90c0ff;
+}    
+.instruct {
+  display: inline-block;
+  background: #d7e8ff;
+  width: calc(100% - 6em);
+  padding: 0.5em;
+}
+.copied {
+  display: none;
+  margin: 0;
+  margin-left: 0.5em;
+}
+#sorry {
+  display: none;
+}
