@@ -1,26 +1,30 @@
 let app = firebase.app();
 firebase.auth().signInAnonymously().catch(function(error) { console.log(error); });
-firebase.auth().onAuthStateChanged(function(user) { });
-db = firebase.firestore(app);
+firebase.auth().onAuthStateChanged(init);
 
 const urlParams = new URLSearchParams(window.location.search);
 const roomid = Number(urlParams.get('id'));
 $('h2').text('Breakout Room '+roomid);
 
-$('#generate').on('click', generate);
 
-db.collection('people').where("room", "==", roomid)
-  .get()
-  .then(function(snapshot) {
-    snapshot.forEach(function(doc) {
-      console.log(doc.id, " => ", doc.data());
-      displayPerson(doc.data());
+function init() {
+  $('#attendance').show();
+  $('#generate').on('click', generate);
+  
+  db = firebase.firestore(app);
+  db.collection('people').where("room", "==", roomid)
+    .get()
+    .then(function(snapshot) {
+      snapshot.forEach(function(doc) {
+        console.log(doc.id, " => ", doc.data());
+        displayPerson(doc.data());
+      });
+      displayPerson({});
+      checkFacilitator();
     });
-    displayPerson({});
-  });
+}
 
 function displayPerson(data) {
-
   if (data.facilitator) {
     $('#facilitator').val(data.name);
     $('#facilitator').data('id', data.id);
@@ -44,6 +48,14 @@ function displayPerson(data) {
   }
 }
 
+function checkFacilitator() {
+  if (!$('#facilitator').val()) {
+    $('#facilitator').data('id', makeid());
+    $('#facilitator').data('facilitator', true);
+    $('#facilitator').on('change', nameAndCheckBlank);
+  }
+}
+
 function checkBlank() {
   let blank = false;
   $('.participant').each(function(i, obj) {
@@ -57,6 +69,7 @@ function checkBlank() {
 }
 
 function nameAndCheckBlank(e) {
+  console.log('hi')
   $('#assignments').hide();
   let p = {
     name: $(e.target).val(),
@@ -76,7 +89,7 @@ function nameAndCheckBlank(e) {
 
 function generate() {
   if (!$('#facilitator').val()) {
-    alert('Please enter your name in the facilitator box!') 
+    alert('Please enter your name in the facilitator box') 
     return false;
   }
 
@@ -119,11 +132,6 @@ function displayAssignments(people) {
     
     elms.push(elm1);
     elms.push(elm2);
-
-    // $('#messages').append('<div id="clip'+p+'" class="message"><span class="instruct"><b>Send to '+a+':</b><br>'+textb+'<img src="clip.png" class="clipicon"></span> <span class="copied">copied!</span></div>');
-    // $('#messages').append('<div id="clip'+(p+1)+'" class="message"><span class="instruct"><b>Send to '+b+':</b><br>'+texta+'<img src="clip.png" class="clipicon"></span> <span class="copied">copied!</span></div>');
-    // $('#clip'+p).click(function() { copyToClipboard($(this), textb); });
-    // $('#clip'+(p+1)).click(function() { copyToClipboard($(this), texta); });
   }
 
   elms = elms.sort(function(a, b) {

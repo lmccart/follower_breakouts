@@ -85,3 +85,8 @@ button {
 #sorry {
   display: none;
 }
+.warning {
+  background: yellow;
+  padding: 0.5em;
+  max-width: 54em;
+}
